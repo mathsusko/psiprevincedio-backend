@@ -13,6 +13,7 @@ const __dirname = path.dirname(__filename)
 import cardRoutes from './routes/estoque/cardEstoque.routes.js'
 import authRoutes from './routes/auth.routes.js'
 import testRoutes from './routes/test.routes.js'
+import clientesRoutes from './routes/clientes/clientes.routes.js'
 
 const app = express()
 
@@ -31,6 +32,7 @@ mongoose
 app.use('/api/cards', cardRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/test', testRoutes)
+app.use('/api/clientes', clientesRoutes)
 
 // Servir arquivos estáticos (como imagens)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
