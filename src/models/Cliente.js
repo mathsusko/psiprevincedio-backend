@@ -11,6 +11,8 @@ const ClienteSchema = new mongoose.Schema(
     cep: { type: String, required: true },
     cidade: { type: String, required: true },
     estado: { type: String, required: true },
+    email: { type: String, required: true },
+    telefone: { type: String, required: true },
     categoria: {
       type: String,
       required: true

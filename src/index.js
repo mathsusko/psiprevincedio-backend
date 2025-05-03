@@ -1,3 +1,4 @@
+// src/server.js
 import 'dotenv/config'
 import express from 'express'
 import mongoose from 'mongoose'
@@ -9,11 +10,11 @@ import cors from 'cors'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-// Importações de rotas
 import cardRoutes from './routes/estoque/cardEstoque.routes.js'
 import authRoutes from './routes/auth.routes.js'
 import testRoutes from './routes/test.routes.js'
 import clientesRoutes from './routes/clientes/clientes.routes.js'
+import dadoPsiRoutes from './routes/dadoPsi/dadoPsi.routes.js'
 
 const app = express()
 
@@ -33,8 +34,9 @@ app.use('/api/cards', cardRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/test', testRoutes)
 app.use('/api/clientes', clientesRoutes)
+app.use('/api/dadoPsi', dadoPsiRoutes)
 
-// Servir arquivos estáticos (como imagens)
+// Servir arquivos estáticos (como imagens) da pasta uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 // Rota de saúde

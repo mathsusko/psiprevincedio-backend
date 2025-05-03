@@ -5,9 +5,9 @@ const CardEstoqueSchema = new mongoose.Schema(
     nome: { type: String, required: true },
     imagemUrl: { type: String, required: true },
     categoria: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Categoria',
-      required: false
+      type: String,
+      enum: ['Un', 'Kg', 'Metros'], // Categoria com valores restritos
+      required: true
     }
   },
   { timestamps: true }

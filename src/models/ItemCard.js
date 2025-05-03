@@ -5,19 +5,19 @@ const itemCardSchema = new mongoose.Schema(
     cardId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'CardEstoque',
-      required: true,
+      required: true
     },
     codigo: String,
-    descricao: String,
+    materialName: String,
     medida: String,
     ncm: String,
     codigoFabrica: String,
     quantidade: Number,
     precoUnitario: Number,
-    custoTotal: Number,
+    custoTotal: Number
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 )
 

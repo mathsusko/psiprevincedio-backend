@@ -1,4 +1,3 @@
-
 // src/routes/estoque/cardEstoque.routes.js
 import express from 'express'
 import {
@@ -6,23 +5,33 @@ import {
   criarCard,
   deletarCard,
   editarCard,
+  listarCardsPorCategoria // Importe a nova função corretamente
+} from '../../controllers/estoque/CardEstoque.controller.js' // A importação agora está correta
+import {
   listarItensDoCard,
   criarItemNoCard,
   editarItem,
   deletarItem,
-} from '../../controllers/estoque/CardEstoque.controller.js'
+  atualizarQuantidadeItem
+} from '../../controllers/estoque/ItemCard.controller.js'
 import upload from '../../middleware/upload.js'
 
 const router = express.Router()
 
+// Rotas para cards
 router.get('/', listarCards)
 router.post('/', upload.single('imagem'), criarCard)
 router.delete('/:id', deletarCard)
 router.put('/:id', upload.single('imagem'), editarCard)
 
-router.get('/:id/itens', listarItensDoCard)
-router.post('/:id/itens', criarItemNoCard)
-router.put('/cards/:cardId/itens/:itemId', editarItem)
-router.delete('/cards/:cardId/itens/:itemId', deletarItem)
+// Rota personalizada para listar cards por categoria
+router.get('/por-categoria', listarCardsPorCategoria) // Definição da rota corretamente aqui
+
+// Rotas para itens dentro de um card
+router.get('/:id/itens', listarItensDoCard) // Listar itens de um card
+router.post('/:id/itens', criarItemNoCard) // Criar item dentro de um card
+router.put('/:cardId/itens/:itemId', editarItem) // Editar item
+router.delete('/:cardId/itens/:itemId', deletarItem) // Deletar item
+router.patch('/:cardId/itens/:itemId', atualizarQuantidadeItem) // Atualizar quantidade
 
 export default router
