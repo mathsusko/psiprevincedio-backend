@@ -24,7 +24,8 @@ export const criarCliente = async (req, res) => {
     estado,
     categoria,
     email,
-    telefone
+    telefone,
+    ie
   } = req.body
 
   try {
@@ -40,7 +41,8 @@ export const criarCliente = async (req, res) => {
       estado,
       categoria,
       email, // Adicionando o campo email
-      telefone // Adicionando o campo telefone
+      telefone,
+      ie
     })
     res.status(201).json({ success: true, data: novoCliente })
   } catch (error) {
@@ -63,7 +65,8 @@ export const editarCliente = async (req, res) => {
     estado,
     categoria,
     email,
-    telefone
+    telefone,
+    ie
   } = req.body
 
   try {
@@ -83,7 +86,8 @@ export const editarCliente = async (req, res) => {
     cliente.estado = estado || cliente.estado
     cliente.categoria = categoria || cliente.categoria
     cliente.email = email || cliente.email // Atualizando o campo email
-    cliente.telefone = telefone || cliente.telefone // Atualizando o campo telefone
+    cliente.telefone = telefone || cliente.telefone
+    cliente.ie = ie || cliente.ie
 
     await cliente.save()
     res.status(200).json({ success: true, data: cliente })

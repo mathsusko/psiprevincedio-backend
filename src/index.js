@@ -15,6 +15,8 @@ import authRoutes from './routes/auth.routes.js'
 import testRoutes from './routes/test.routes.js'
 import clientesRoutes from './routes/clientes/clientes.routes.js'
 import dadoPsiRoutes from './routes/dadoPsi/dadoPsi.routes.js'
+import orcamentoRoutes from './routes/orcamento/orcamento.routes.js'
+import orcamentoItemRoutes from './routes/orcamento/orcamento-items.routes.js'
 
 const app = express()
 
@@ -35,6 +37,8 @@ app.use('/api/auth', authRoutes)
 app.use('/api/test', testRoutes)
 app.use('/api/clientes', clientesRoutes)
 app.use('/api/dadoPsi', dadoPsiRoutes)
+app.use('/api/orcamentos', orcamentoRoutes)
+app.use('/api/orcamento-items', orcamentoItemRoutes)
 
 // Servir arquivos estáticos (como imagens) da pasta uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))

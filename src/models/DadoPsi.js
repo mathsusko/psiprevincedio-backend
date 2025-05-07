@@ -50,6 +50,10 @@ const DadoPsiSchema = new mongoose.Schema(
     categoria: {
       type: String, // Pode ser 'Matriz', 'Filial', etc.
       required: true
+    },
+    ie: {
+      type: String,
+      required: true
     }
   },
   { timestamps: true }

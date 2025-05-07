@@ -24,7 +24,8 @@ export const criarDadoPsi = async (req, res) => {
     estado,
     email,
     telefone,
-    categoria
+    categoria,
+    ie
   } = req.body
 
   try {
@@ -46,7 +47,8 @@ export const criarDadoPsi = async (req, res) => {
       estado,
       email,
       telefone,
-      categoria
+      categoria,
+      ie
     })
     res.status(201).json({ success: true, data: novoDadoPsi })
   } catch (error) {
@@ -69,7 +71,8 @@ export const editarDadoPsi = async (req, res) => {
     estado,
     email,
     telefone,
-    categoria
+    categoria,
+    ie
   } = req.body
 
   try {
@@ -96,6 +99,7 @@ export const editarDadoPsi = async (req, res) => {
     dadoPsi.email = email || dadoPsi.email
     dadoPsi.telefone = telefone || dadoPsi.telefone
     dadoPsi.categoria = categoria || dadoPsi.categoria
+    dadoPsi.ie = ie || dadoPsi.ie
 
     await dadoPsi.save()
     res.status(200).json({ success: true, data: dadoPsi })

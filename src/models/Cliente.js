@@ -16,6 +16,10 @@ const ClienteSchema = new mongoose.Schema(
     categoria: {
       type: String,
       required: true
+    },
+    ie: {
+      type: String,
+      required: true
     }
   },
   { timestamps: true }
