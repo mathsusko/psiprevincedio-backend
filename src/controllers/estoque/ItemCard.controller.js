@@ -25,9 +25,18 @@ export const listarItensDoCard = async (req, res) => {
 
 // Criar item no card
 export const criarItemNoCard = async (req, res) => {
+  const {
+    codigo,
+    materialName,
+    medida,
+    ncm,
+    codigoFabrica,
+    quantidade,
+    precoUnitario,
+    precoCusto // <- NOVO
+  } = req.body
   const { id } = req.params
-  const { codigo, materialName, medida, ncm, codigoFabrica, quantidade, precoUnitario } =
-    req.body
+
   const custoTotal = Number(precoUnitario) * Number(quantidade)
 
   try {
@@ -40,8 +49,10 @@ export const criarItemNoCard = async (req, res) => {
       codigoFabrica,
       quantidade,
       precoUnitario,
+      precoCusto, // <- NOVO
       custoTotal
     })
+
     return res.status(201).json(novoItem)
   } catch (error) {
     return res.status(500).json({ error: error.message })
@@ -78,8 +89,16 @@ export const atualizarQuantidadeItem = async (req, res) => {
 // Editar item
 export const editarItem = async (req, res) => {
   const { cardId, itemId } = req.params
-  const { codigo, materialName, medida, ncm, codigoFabrica, quantidade, precoUnitario } =
-    req.body
+  const {
+    codigo,
+    materialName,
+    medida,
+    ncm,
+    codigoFabrica,
+    quantidade,
+    precoUnitario,
+    precoCusto // <- NOVO
+  } = req.body
 
   try {
     const item = await ItemCard.findById(itemId)
@@ -93,6 +112,7 @@ export const editarItem = async (req, res) => {
     item.codigoFabrica = codigoFabrica || item.codigoFabrica
     item.quantidade = quantidade || item.quantidade
     item.precoUnitario = precoUnitario || item.precoUnitario
+    item.precoCusto = precoCusto || item.precoCusto // <- NOVO
     item.custoTotal = item.quantidade * item.precoUnitario
 
     await item.save()

@@ -14,6 +14,7 @@ const itemCardSchema = new mongoose.Schema(
     codigoFabrica: String,
     quantidade: Number,
     precoUnitario: Number,
+    precoCusto: Number, // <- NOVO CAMPO
     custoTotal: Number
   },
   {

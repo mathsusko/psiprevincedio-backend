@@ -4,24 +4,17 @@ import {
   criarCliente,
   editarCliente,
   deletarCliente,
-  obterClientePorId
+  obterClientePorId,
+  listarFiliaisPorClientePai
 } from '../../controllers/clientes/Cliente.controller.js'
 
 const router = express.Router()
 
-// Rota para listar todos os clientes
 router.get('/', listarClientes)
-
-// Rota para criar um novo cliente
 router.post('/', criarCliente)
-
-// Rota para editar um cliente
 router.put('/:id', editarCliente)
-
-// Rota para deletar um cliente
 router.delete('/:id', deletarCliente)
-
-// Rota para obter um cliente pelo ID
-router.get('/:id', obterClientePorId) // Esta rota foi adicionada para trazer um cliente específico
+router.get('/:id', obterClientePorId)
+router.get('/filiais/:clientePaiId', listarFiliaisPorClientePai)
 
 export default router

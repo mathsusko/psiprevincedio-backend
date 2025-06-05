@@ -1,16 +1,16 @@
 import Cliente from '../../models/Cliente.js'
 
-// Listar todos os clientes
 export const listarClientes = async (req, res) => {
+  const { clientePaiId } = req.query
   try {
-    const clientes = await Cliente.find().sort({ createdAt: -1 })
+    const query = clientePaiId ? { clientePaiId } : { clientePaiId: null }
+    const clientes = await Cliente.find(query).sort({ createdAt: -1 })
     res.status(200).json(clientes)
   } catch (error) {
-    res.status(500).json({ erro: error.message })
+    res.status(500).json({ error: error.message })
   }
 }
 
-// Criar novo cliente
 export const criarCliente = async (req, res) => {
   const {
     nomeEmpresa,
@@ -25,11 +25,19 @@ export const criarCliente = async (req, res) => {
     categoria,
     email,
     telefone,
-    ie
+    ie,
+    clientePaiId
   } = req.body
 
+  if (!nomeEmpresa || nomeEmpresa.trim() === '') {
+    return res.status(400).json({
+      success: false,
+      error: 'Nome da empresa é obrigatório'
+    })
+  }
+
   try {
-    const novoCliente = await Cliente.create({
+    const cliente = await Cliente.create({
       nomeEmpresa,
       cnpjCpf,
       endereco,
@@ -40,72 +48,33 @@ export const criarCliente = async (req, res) => {
       cidade,
       estado,
       categoria,
-      email, // Adicionando o campo email
+      email,
       telefone,
-      ie
+      ie,
+      clientePaiId: clientePaiId || null
     })
-    res.status(201).json({ success: true, data: novoCliente })
+
+    res.status(201).json({ success: true, data: cliente })
   } catch (error) {
     res.status(400).json({ success: false, error: error.message })
   }
 }
 
-// Editar cliente
 export const editarCliente = async (req, res) => {
   const { id } = req.params
-  const {
-    nomeEmpresa,
-    cnpjCpf,
-    endereco,
-    numeroEndereco,
-    complemento,
-    bairro,
-    cep,
-    cidade,
-    estado,
-    categoria,
-    email,
-    telefone,
-    ie
-  } = req.body
+  const dados = req.body
 
   try {
-    const cliente = await Cliente.findById(id)
-    if (!cliente) {
-      return res.status(404).json({ success: false, error: 'Cliente não encontrado' })
-    }
-
-    cliente.nomeEmpresa = nomeEmpresa || cliente.nomeEmpresa
-    cliente.cnpjCpf = cnpjCpf || cliente.cnpjCpf
-    cliente.endereco = endereco || cliente.endereco
-    cliente.numeroEndereco = numeroEndereco || cliente.numeroEndereco
-    cliente.complemento = complemento || cliente.complemento
-    cliente.bairro = bairro || cliente.bairro
-    cliente.cep = cep || cliente.cep
-    cliente.cidade = cidade || cliente.cidade
-    cliente.estado = estado || cliente.estado
-    cliente.categoria = categoria || cliente.categoria
-    cliente.email = email || cliente.email // Atualizando o campo email
-    cliente.telefone = telefone || cliente.telefone
-    cliente.ie = ie || cliente.ie
-
-    await cliente.save()
+    const cliente = await Cliente.findByIdAndUpdate(id, dados, { new: true })
     res.status(200).json({ success: true, data: cliente })
   } catch (error) {
     res.status(500).json({ success: false, error: error.message })
   }
 }
 
-// Deletar cliente
 export const deletarCliente = async (req, res) => {
   const { id } = req.params
-
   try {
-    const cliente = await Cliente.findById(id)
-    if (!cliente) {
-      return res.status(404).json({ success: false, error: 'Cliente não encontrado' })
-    }
-
     await Cliente.findByIdAndDelete(id)
     res.status(200).json({ success: true, message: 'Cliente deletado com sucesso' })
   } catch (error) {
@@ -113,17 +82,22 @@ export const deletarCliente = async (req, res) => {
   }
 }
 
-// Obter um cliente pelo ID
 export const obterClientePorId = async (req, res) => {
   const { id } = req.params
-
   try {
     const cliente = await Cliente.findById(id)
-    if (!cliente) {
-      return res.status(404).json({ success: false, error: 'Cliente não encontrado' })
-    }
     res.status(200).json(cliente)
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message })
+    res.status(500).json({ error: error.message })
+  }
+}
+
+export const listarFiliaisPorClientePai = async (req, res) => {
+  const { clientePaiId } = req.params
+  try {
+    const filiais = await Cliente.find({ clientePaiId })
+    res.status(200).json(filiais)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
   }
 }
