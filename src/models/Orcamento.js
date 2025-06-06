@@ -7,7 +7,7 @@ const OrcamentoSchema = new mongoose.Schema(
       ref: 'DadoPsi',
       required: true
     },
-    clienteId: {
+    filialId: {
       type: mongoose.Types.ObjectId,
       ref: 'Cliente',
       required: true

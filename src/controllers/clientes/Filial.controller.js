@@ -1,17 +1,34 @@
 import Cliente from '../../models/Cliente.js'
 
 // 🔍 Listar filiais de um cliente pai
+// export const listarFiliais = async (req, res) => {
+//   const { clientePaiId } = req.params
+
+//   try {
+//     const filiais = await Cliente.find({ clientePaiId })
+//     res.status(200).json(filiais)
+//   } catch (error) {
+//     res.status(500).json({ success: false, error: error.message })
+//   }
+// }
+
 export const listarFiliais = async (req, res) => {
   const { clientePaiId } = req.params
 
   try {
     const filiais = await Cliente.find({ clientePaiId })
-    res.status(200).json(filiais)
+
+    res.status(200).json({
+      success: true,
+      data: filiais
+    })
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message })
+    res.status(500).json({
+      success: false,
+      error: error.message
+    })
   }
 }
-
 // ➕ Criar nova filial
 export const criarFilial = async (req, res) => {
   try {
