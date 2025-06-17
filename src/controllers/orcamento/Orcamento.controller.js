@@ -113,3 +113,28 @@ export const listOrcamentos = async (req, res) => {
     return res.status(500).json({ error: 'Erro ao listar orçamentos' })
   }
 }
+
+export const deleteOrcamento = async (req, res) => {
+  try {
+    const { id } = req.params
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'ID inválido' })
+    }
+
+    // Deleta orçamento
+    const orcamentoDeletado = await Orcamento.findByIdAndDelete(id)
+
+    if (!orcamentoDeletado) {
+      return res.status(404).json({ error: 'Orçamento não encontrado' })
+    }
+
+    // Deleta os itens do orçamento
+    await OrcamentoItem.deleteMany({ orcamentoId: id })
+
+    return res.json({ message: 'Orçamento excluído com sucesso' })
+  } catch (err) {
+    console.error('[❌ ERRO AO EXCLUIR ORÇAMENTO]', err)
+    return res.status(500).json({ error: 'Erro ao excluir orçamento' })
+  }
+}

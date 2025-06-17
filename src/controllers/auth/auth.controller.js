@@ -49,7 +49,6 @@
 //   }
 // }
 
-
 import Usuario from '../../models/Usuario.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
@@ -90,12 +89,10 @@ export const registrar = async (req, res) => {
     await novoUsuario.save()
 
     const token = gerarToken(novoUsuario._id)
-    res
-      .status(201)
-      .json({
-        token,
-        usuario: { id: novoUsuario._id, nome: novoUsuario.nome, email: novoUsuario.email }
-      })
+    res.status(201).json({
+      token,
+      usuario: { id: novoUsuario._id, nome: novoUsuario.nome, email: novoUsuario.email }
+    })
   } catch (error) {
     res.status(500).json({ msg: 'Erro ao registrar', error: error.message })
   }

@@ -1,12 +1,12 @@
-// src/models/NotaFiscal.js
 import mongoose from 'mongoose'
 
 const notaFiscalSchema = new mongoose.Schema(
   {
-    nomeEmpresa: { type: String, required: true },
+    clienteNome: { type: String, required: true },
     descricao: { type: String },
     dataRecebimento: { type: Date },
-    caminhoArquivo: { type: String, required: true }
+    caminhoArquivo: { type: String, required: true },
+    filialId: { type: mongoose.Schema.Types.ObjectId, ref: 'Filial', required: true } // Adicionando a associação com a filial
   },
   {
     timestamps: true

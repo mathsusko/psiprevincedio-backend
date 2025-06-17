@@ -7,23 +7,24 @@ const __dirname = path.dirname(__filename)
 
 export const criarNotaFiscal = async (req, res) => {
   try {
-    const { clienteNome, descricao, dataRecebimento } = req.body
+    const { clienteNome, descricao, dataRecebimento, filialId } = req.body
     const arquivo = req.file
 
-    if (!arquivo || !clienteNome) {
+    if (!arquivo || !clienteNome || !filialId) {
       return res
         .status(400)
-        .json({ message: 'Arquivo e nome da empresa são obrigatórios.' })
+        .json({ message: 'Arquivo, nome da empresa e ID da filial são obrigatórios.' })
     }
 
     const dataRecebida = new Date(dataRecebimento)
     dataRecebida.setUTCHours(12) // Corrige o offset de timezone
 
     const novaNota = await NotaFiscal.create({
-      nomeEmpresa: clienteNome,
+      clienteNome: clienteNome,
       descricao,
       dataRecebimento: dataRecebida,
-      caminhoArquivo: arquivo.filename
+      caminhoArquivo: arquivo.filename,
+      filialId: filialId // Aqui associamos a nota à filial
     })
 
     res.status(201).json(novaNota)

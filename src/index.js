@@ -37,7 +37,7 @@ mongoose
   .catch((err) => console.error('❌ Erro na conexão:', err))
 
 // Servir arquivos públicos
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')))
 
 // Rotas da API
 app.use('/api/cards', cardRoutes)
