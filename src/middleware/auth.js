@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-export const verificarToken = (req, res, next) => {
+const verificarToken = (req, res, next) => {
   const authHeader = req.headers.authorization
   const token = authHeader && authHeader.split(' ')[1]
 
@@ -14,3 +14,7 @@ export const verificarToken = (req, res, next) => {
     res.status(403).json({ msg: 'Token inválido' })
   }
 }
+
+
+
+export default verificarToken // Alterando para exportação default

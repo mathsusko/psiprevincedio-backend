@@ -8,13 +8,8 @@ import {
 
 const router = express.Router()
 
-// Rota para listar todas as notas fiscais
 router.get('/', listarNotasFiscais)
-
-// Rota para criar uma nova nota fiscal
-router.post('/', upload.single('arquivo'), criarNotaFiscal) // Já está configurado para aceitar o arquivo
-
-// Rota para deletar uma nota fiscal
+router.post('/', upload.single('arquivo'), criarNotaFiscal)
 router.delete('/:id', deletarNotaFiscal)
 
 export default router

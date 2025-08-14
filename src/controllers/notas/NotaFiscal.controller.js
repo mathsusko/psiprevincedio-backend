@@ -11,32 +11,35 @@ export const criarNotaFiscal = async (req, res) => {
     const arquivo = req.file
 
     if (!arquivo || !clienteNome || !filialId) {
-      return res
-        .status(400)
-        .json({ message: 'Arquivo, nome da empresa e ID da filial são obrigatórios.' })
+      return res.status(400).json({ message: 'Todos os campos são obrigatórios.' })
     }
 
     const dataRecebida = new Date(dataRecebimento)
-    dataRecebida.setUTCHours(12) // Corrige o offset de timezone
+    dataRecebida.setUTCHours(12)
 
     const novaNota = await NotaFiscal.create({
-      clienteNome: clienteNome,
+      clienteNome,
       descricao,
       dataRecebimento: dataRecebida,
       caminhoArquivo: arquivo.filename,
-      filialId: filialId // Aqui associamos a nota à filial
+      filialId
     })
 
     res.status(201).json(novaNota)
   } catch (err) {
-    console.error(err)
     res.status(500).json({ message: 'Erro ao criar nota fiscal.' })
   }
 }
 
 export const listarNotasFiscais = async (req, res) => {
   try {
-    const notas = await NotaFiscal.find().sort({ createdAt: -1 })
+    const { filialId } = req.query
+
+    if (!filialId) {
+      return res.status(400).json({ message: 'filialId é obrigatório na query.' })
+    }
+
+    const notas = await NotaFiscal.find({ filialId }).sort({ createdAt: -1 })
     res.json(notas)
   } catch (err) {
     res.status(500).json({ message: 'Erro ao buscar notas fiscais.' })

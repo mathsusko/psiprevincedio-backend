@@ -9,10 +9,19 @@ import {
 
 const router = express.Router()
 
+// Listar todos os funcionários
 router.get('/', listarFuncionarios)
+
+// Obter funcionário por ID
 router.get('/:id', obterFuncionario)
+
+// Criar novo funcionário
 router.post('/', criarFuncionario)
+
+// Atualizar funcionário
 router.put('/:id', atualizarFuncionario)
+
+// Deletar funcionário
 router.delete('/:id', deletarFuncionario)
 
 export default router

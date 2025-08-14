@@ -1,4 +1,3 @@
-// src/controllers/estoque/ItemCard.controller.js
 import ItemCard from '../../models/ItemCard.js'
 import CardEstoque from '../../models/CardEstoque.js'
 
@@ -19,7 +18,7 @@ export const listarItensDoCard = async (req, res) => {
 
     return res.status(200).json(resposta)
   } catch (error) {
-    return res.status(500).json({ error: error.message })
+    return res.status(500).json({ error: 'Erro ao listar itens: ' + error.message })
   }
 }
 
@@ -36,6 +35,17 @@ export const criarItemNoCard = async (req, res) => {
     precoCusto // <- NOVO
   } = req.body
   const { id } = req.params
+
+  // Validação de quantidade e preço
+  if (isNaN(quantidade) || quantidade <= 0) {
+    return res.status(400).json({ success: false, error: 'Quantidade inválida' })
+  }
+  if (isNaN(precoUnitario) || precoUnitario <= 0) {
+    return res.status(400).json({ success: false, error: 'Preço unitário inválido' })
+  }
+  if (isNaN(precoCusto) || precoCusto < 0) {
+    return res.status(400).json({ success: false, error: 'Preço de custo inválido' })
+  }
 
   const custoTotal = Number(precoUnitario) * Number(quantidade)
 
@@ -55,7 +65,7 @@ export const criarItemNoCard = async (req, res) => {
 
     return res.status(201).json(novoItem)
   } catch (error) {
-    return res.status(500).json({ error: error.message })
+    return res.status(500).json({ error: 'Erro ao criar item: ' + error.message })
   }
 }
 
@@ -64,6 +74,7 @@ export const atualizarQuantidadeItem = async (req, res) => {
   const { cardId, itemId } = req.params
   const { quantidade } = req.body
 
+  // Validação de quantidade
   if (isNaN(quantidade) || quantidade < 0) {
     return res.status(400).json({ success: false, error: 'Quantidade inválida' })
   }
@@ -78,11 +89,15 @@ export const atualizarQuantidadeItem = async (req, res) => {
       return res.status(404).json({ success: false, error: 'Item não encontrado' })
 
     item.quantidade = quantidade
+    item.custoTotal = item.precoUnitario * item.quantidade // Atualizando custo total
     await item.save()
 
     return res.status(200).json({ success: true, data: item })
   } catch (error) {
-    return res.status(500).json({ success: false, error: error.message })
+    return res.status(500).json({
+      success: false,
+      error: 'Erro ao atualizar quantidade do item: ' + error.message
+    })
   }
 }
 
@@ -100,6 +115,14 @@ export const editarItem = async (req, res) => {
     precoCusto // <- NOVO
   } = req.body
 
+  // Validação de campos numéricos
+  if (isNaN(precoUnitario) || precoUnitario <= 0) {
+    return res.status(400).json({ success: false, error: 'Preço unitário inválido' })
+  }
+  if (isNaN(precoCusto) || precoCusto < 0) {
+    return res.status(400).json({ success: false, error: 'Preço de custo inválido' })
+  }
+
   try {
     const item = await ItemCard.findById(itemId)
     if (!item)
@@ -113,13 +136,15 @@ export const editarItem = async (req, res) => {
     item.quantidade = quantidade || item.quantidade
     item.precoUnitario = precoUnitario || item.precoUnitario
     item.precoCusto = precoCusto || item.precoCusto // <- NOVO
-    item.custoTotal = item.quantidade * item.precoUnitario
+    item.custoTotal = item.quantidade * item.precoUnitario // Atualiza custo total
 
     await item.save()
 
     return res.status(200).json({ success: true, data: item })
   } catch (error) {
-    return res.status(500).json({ success: false, error: error.message })
+    return res
+      .status(500)
+      .json({ success: false, error: 'Erro ao editar item: ' + error.message })
   }
 }
 
@@ -136,6 +161,8 @@ export const deletarItem = async (req, res) => {
 
     return res.status(200).json({ success: true, message: 'Item deletado com sucesso' })
   } catch (error) {
-    return res.status(500).json({ success: false, error: error.message })
+    return res
+      .status(500)
+      .json({ success: false, error: 'Erro ao deletar item: ' + error.message })
   }
 }

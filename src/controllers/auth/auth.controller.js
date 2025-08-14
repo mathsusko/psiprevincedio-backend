@@ -38,26 +38,17 @@
 //     await novoUsuario.save()
 
 //     const token = gerarToken(novoUsuario._id)
-//     res
-//       .status(201)
-//       .json({
-//         token,
-//         usuario: { id: novoUsuario._id, nome: novoUsuario.nome, email: novoUsuario.email }
-//       })
+//     res.status(201).json({
+//       token,
+//       usuario: { id: novoUsuario._id, nome: novoUsuario.nome, email: novoUsuario.email }
+//     })
 //   } catch (error) {
 //     res.status(500).json({ msg: 'Erro ao registrar', error: error.message })
 //   }
 // }
 
 import Usuario from '../../models/Usuario.js'
-import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
-
-const gerarToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '7d'
-  })
-}
 
 export const login = async (req, res) => {
   const { email, senha } = req.body
@@ -68,9 +59,8 @@ export const login = async (req, res) => {
     const senhaCorreta = await bcrypt.compare(senha, usuario.senha)
     if (!senhaCorreta) return res.status(401).json({ msg: 'Senha incorreta' })
 
-    const token = gerarToken(usuario._id)
+    // Login bem-sucedido, não precisamos de token
     res.json({
-      token,
       usuario: { id: usuario._id, nome: usuario.nome, email: usuario.email }
     })
   } catch (error) {
@@ -88,9 +78,7 @@ export const registrar = async (req, res) => {
     const novoUsuario = new Usuario({ nome, email, senha: senhaHash })
     await novoUsuario.save()
 
-    const token = gerarToken(novoUsuario._id)
     res.status(201).json({
-      token,
       usuario: { id: novoUsuario._id, nome: novoUsuario.nome, email: novoUsuario.email }
     })
   } catch (error) {

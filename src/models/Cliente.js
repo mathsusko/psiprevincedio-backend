@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 const ClienteSchema = new mongoose.Schema(
   {
     nomeEmpresa: { type: String, required: true },
-    cnpjCpf: { type: String },
+    cnpjCpf: { type: String, required: true },
     endereco: { type: String },
     numeroEndereco: { type: String },
     complemento: { type: String },
@@ -14,14 +14,7 @@ const ClienteSchema = new mongoose.Schema(
     email: { type: String },
     telefone: { type: String },
     categoria: { type: String },
-    ie: { type: String },
-
-    // ⚠️ NOVO: campo opcional usado para vincular filiais
-    clientePaiId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Cliente',
-      default: null
-    }
+    ie: { type: String }
   },
   { timestamps: true }
 )
