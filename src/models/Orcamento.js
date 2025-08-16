@@ -4,12 +4,12 @@ const OrcamentoSchema = new mongoose.Schema(
   {
     prestadorId: {
       type: mongoose.Types.ObjectId,
-      ref: 'DadoPsi',
+      ref: 'DadoPsi', // Referência ao prestador
       required: true
     },
-    filialId: {
+    clienteId: {
       type: mongoose.Types.ObjectId,
-      ref: 'Cliente',
+      ref: 'Cliente', // Alterado para Cliente ao invés de Filial
       required: true
     },
     custo: {

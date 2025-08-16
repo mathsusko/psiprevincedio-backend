@@ -17,3 +17,4 @@ router.put('/:id', editarCliente)
 router.delete('/:id', deletarCliente)
 
 export default router
+

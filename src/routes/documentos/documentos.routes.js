@@ -15,7 +15,7 @@ router.post(
 router.get('/:clienteId', documentoController.getDocumentosCliente)
 
 // Rota para atualizar a descrição de um documento
-router.put('/:documentoId', documentoController.updateDescricao) // Atualiza a descrição
+router.put('/:documentoId', documentoController.updateDescricao)
 
 // Rota para deletar um documento
 router.delete('/:documentoId', documentoController.deleteDocumento)

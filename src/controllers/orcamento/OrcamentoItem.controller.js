@@ -13,10 +13,12 @@ export const createItem = async (req, res) => {
       imagem // ✅ Agora captura a imagem do body
     } = req.body
 
+    // Validação de orcamentoId
     if (!mongoose.Types.ObjectId.isValid(orcamentoId)) {
       return res.status(400).json({ error: 'orcamentoId inválido' })
     }
 
+    // Criação do item de orçamento
     const item = await OrcamentoItem.create({
       orcamentoId,
       materialId,

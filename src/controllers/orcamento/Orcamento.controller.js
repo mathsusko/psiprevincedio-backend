@@ -8,19 +8,19 @@ const uploadsDir = path.resolve('src', 'uploads')
 
 export const createOrcamento = async (req, res) => {
   try {
-    const { prestadorId, filialId, custo, dataInicio, dataSaida, descricaoServico } =
+    const { prestadorId, clienteId, custo, dataInicio, dataSaida, descricaoServico } =
       req.body
 
     if (
       !mongoose.Types.ObjectId.isValid(prestadorId) ||
-      !mongoose.Types.ObjectId.isValid(filialId)
+      !mongoose.Types.ObjectId.isValid(clienteId) // Alterado de filialId para clienteId
     ) {
       return res.status(400).json({ error: 'IDs inválidos' })
     }
 
     const novo = await Orcamento.create({
       prestadorId,
-      filialId,
+      clienteId, // Alterado de filialId para clienteId
       custo,
       dataInicio,
       dataSaida,
@@ -46,7 +46,7 @@ export const getOrcamento = async (req, res) => {
     }
 
     const orcamento = await Orcamento.findById(id)
-      .populate('filialId')
+      .populate('clienteId') // Alterado de filialId para clienteId
       .populate('prestadorId')
 
     if (!orcamento) {
@@ -100,11 +100,11 @@ export const listOrcamentos = async (req, res) => {
     const filtros = {}
 
     if (req.query.prestadorId) filtros.prestadorId = req.query.prestadorId
-    if (req.query.filialId) filtros.filialId = req.query.filialId
+    if (req.query.clienteId) filtros.clienteId = req.query.clienteId // Alterado de filialId para clienteId
 
     const lista = await Orcamento.find(filtros)
       .sort({ createdAt: -1 })
-      .populate('filialId')
+      .populate('clienteId') // Alterado de filialId para clienteId
       .populate('prestadorId')
 
     return res.json(lista)

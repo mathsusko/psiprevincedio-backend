@@ -1,4 +1,3 @@
-// src/controllers/clientes/Cliente.controller.js
 import ClientePrincipal from '../../models/Cliente.js'
 
 // Listar todos os clientes
@@ -92,7 +91,6 @@ export const editarCliente = async (req, res) => {
   }
 }
 
-
 // Deletar cliente
 export const deletarCliente = async (req, res) => {
   const { id } = req.params
@@ -107,4 +105,3 @@ export const deletarCliente = async (req, res) => {
     res.status(500).json({ success: false, error: error.message })
   }
 }
-

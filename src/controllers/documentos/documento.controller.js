@@ -1,4 +1,4 @@
-import Documento from '../../models/Documento.js' // Corrigido para importação com ESM
+import Documento from '../../models/Documento.js' // Importação com ESM
 import path from 'path'
 import fs from 'fs'
 
@@ -6,29 +6,31 @@ import fs from 'fs'
 export const uploadDocumento = async (req, res) => {
   try {
     const { clienteId } = req.params
-    const { descricao } = req.body // Removido o campo 'nome'
+    const { descricao } = req.body // Descrição do documento
     const file = req.file
 
+    // Verificar se o arquivo foi enviado
     if (!file) {
       return res.status(400).json({ message: 'Arquivo não enviado' })
     }
 
     const url = `/uploads/documentos/${file.filename}`
 
+    // Criação do documento no banco de dados
     const documento = await Documento.create({
       clienteId,
-      descricao, // Apenas 'descricao' agora
+      descricao,
       url
     })
 
-    res.status(201).json(documento)
+    res.status(201).json(documento) // Retorna o documento criado
   } catch (error) {
     console.error('Erro no upload:', error)
     res.status(500).json({ message: 'Erro ao enviar o documento' })
   }
 }
 
-// Função para buscar documentos do cliente
+// Função para buscar documentos de um cliente
 export const getDocumentosCliente = async (req, res) => {
   try {
     const { clienteId } = req.params
