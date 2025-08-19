@@ -17,7 +17,6 @@ export const createItem = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(orcamentoId)) {
       return res.status(400).json({ error: 'orcamentoId inválido' })
     }
-
     // Criação do item de orçamento
     const item = await OrcamentoItem.create({
       orcamentoId,
@@ -28,7 +27,6 @@ export const createItem = async (req, res) => {
       precoUn,
       imagem // ✅ Agora salva no banco
     })
-
     return res.status(201).json(item)
   } catch (err) {
     console.error('Erro ao criar item de orçamento:', err)
